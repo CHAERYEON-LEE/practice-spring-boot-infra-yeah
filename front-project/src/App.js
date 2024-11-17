@@ -8,7 +8,9 @@ function App() {
 
   useEffect(() => {
     const getServerData = () => {
-      axios.get("http://34.135.64.14/api/demo").then(res => setServerData(res))
+      axios.get("/api/demo").then(res => {
+        setServerData(res.data)
+      }).catch(err => console.log(err))
     }
 
     getServerData()
