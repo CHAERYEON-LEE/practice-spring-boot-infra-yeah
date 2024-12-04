@@ -1,0 +1,27 @@
+spring:
+  application:
+    name: demo
+
+# DB 연결정보
+  datasource:
+    # DB에 연결하기 위해 사용되는 JDBC 드라이버의 클래스명
+    # MySql Connector/J8.0 이상 버전에 포함된 드라이버 클래스 , Java 애플리케이션과 MySql DB간의 연결 관리
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    # DB의 위치를 나타내는 JDBC url
+    url: jdbc:mysql://localhost:3306/demo_db
+    # DB 접속 사용자 이름
+    username: demouser
+    # DB 접속 사용자 패스워드
+    password: root1234
+
+# MyBatis 설정 정보
+mybatis:
+  # MyBatis의 전역 구성 파일의 위치 지정
+  # classpath 상의 mybatis-config.xml 파일 참조, MyBatis 설정 정의 및 초기화에 사용
+  config-location: classpath:mybatis-config.xml
+  # MyBatis Mapper 파일들의 위치 지정
+  # classpath 상의 mapper 디렉토리 내 모든 .xml 파일을 Mapper 파일로 로드
+  mapper-locations: classpath:mapper/*.xml
+  # 타입 별칭을 자동으로 스캔할 패키지의 위치 지정
+  # 해당 패키지와 하위 패키지에서 MyBatis가 사용할 수 있는 타입 별칭을 정의한 클래스 검색
+  type-aliases-package: com.example.demo
