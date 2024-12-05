@@ -1,5 +1,4 @@
-import "./App.css";
-import BoardPage from "./pages/BoardPage";
+import BoardPage from "./pages/board/BoardPage";
 
 function App() {
   return <BoardPage />;

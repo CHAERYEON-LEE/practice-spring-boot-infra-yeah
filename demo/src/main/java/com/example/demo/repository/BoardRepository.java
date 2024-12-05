@@ -8,4 +8,10 @@ import java.util.List;
 @Mapper
 public interface BoardRepository {
     List<Board> getAllBoardList();
+
+    Board getBoardItem(int boardId);
+
+    int insertBoard(Board board);
+
+    int softDeleteBoard(int boardId);
 }

@@ -3,15 +3,12 @@ package com.example.demo.controller;
 import com.example.demo.domain.Board;
 import com.example.demo.service.BoardService;
 import lombok.AllArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 //@AllArgsConstructor
-@RequestMapping("/api")
+@RequestMapping("/api/board")
 @RestController
 public class BoardController {
 
@@ -22,8 +19,21 @@ public class BoardController {
     }
 
     @GetMapping("/list")
-    public List<Board> findAll(){
+    public List<Board> getAllBoardList(){
         return boardService.getAllBoardList();
     }
 
+    @GetMapping("/detail")
+    public Board getBoardItem(@RequestParam int boardId){ return boardService.getBoardItem(boardId);}
+
+    @PostMapping("/create")
+    public int insertBoard(@RequestBody Board payload){
+//        System.out.println("Received payload: " + payload.toString());
+        return boardService.insertBoard(payload);
+    }
+
+    @DeleteMapping("/delete")
+    public int softDeleteBoard(@RequestParam int boardId){
+        return boardService.softDeleteBoard(boardId);
+    }
 }

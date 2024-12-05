@@ -23,4 +23,15 @@ public class BoardService {
     public List<Board> getAllBoardList(){
         return boardRepository.getAllBoardList();
     }
+    public Board getBoardItem(int boardId){
+        return boardRepository.getBoardItem(boardId);
+    }
+
+    public int insertBoard(Board board){
+        return boardRepository.insertBoard(board);
+    }
+
+    public int softDeleteBoard(int boardId){
+        return boardRepository.softDeleteBoard(boardId);
+    }
 }
