@@ -3,6 +3,7 @@ import axios from "axios";
 import { Table } from "antd";
 import { BoardColumns } from "../../utils/boardColum";
 import { useNavigate } from "react-router-dom";
+import { getBoardList } from "../../utils/api/board/boardApi";
 /**
  * /api/list response data
  * board_id; 게시물 id
@@ -20,16 +21,12 @@ const BoardPage = () => {
   const [serverData, setServerData] = useState("");
 
   useEffect(() => {
-    const getServerData = () => {
-      axios
-        .get("/api/board/list")
-        .then((res) => {
-          setServerData(res.data);
-        })
-        .catch((err) => console.log(err));
+    const getList = async () => {
+      const res = await getBoardList();
+      setServerData(res.data);
     };
 
-    getServerData();
+    getList();
   }, []);
 
   return (

@@ -1,6 +1,6 @@
 package com.example.demo.service;
 
-import com.example.demo.domain.Board;
+import com.example.demo.domain.board.Board;
 import com.example.demo.repository.BoardRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -10,13 +10,6 @@ import java.util.List;
 // BoardMapper를 주입받아, 데이터베이스로부터 게시물 목록을 가져오는 비즈니스 로직
 @Service
 public class BoardService {
-//    private final BoardRepository boardRepository;
-
-//    @Autowired
-//    public BoardService(BoardRepository boardRepository) {
-//        this.boardRepository = boardRepository;
-//    }
-
     @Autowired
     BoardRepository boardRepository;
 
@@ -34,4 +27,6 @@ public class BoardService {
     public int softDeleteBoard(int boardId){
         return boardRepository.softDeleteBoard(boardId);
     }
+
+    public int updateBoard(Board board) { return boardRepository.updateBoard(board); }
 }

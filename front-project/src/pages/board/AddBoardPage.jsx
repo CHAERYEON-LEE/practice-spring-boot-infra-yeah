@@ -2,6 +2,7 @@ import axios from "axios";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Modal, Alert } from "antd";
+import { postBoardCreate } from "../../utils/api/board/boardApi";
 
 const AddBoardPage = () => {
   const navigate = useNavigate();
@@ -11,7 +12,7 @@ const AddBoardPage = () => {
   const [alert, setAlert] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  const postBoard = () => {
+  const postBoard = async () => {
     if (title === "" || content === "") {
       setAlert(true);
       setTimeout(() => {
@@ -19,18 +20,17 @@ const AddBoardPage = () => {
       }, 3000);
       return;
     }
+
     setLoading(true);
-    axios
-      .post("/api/board/create", {
-        title,
-        content,
-      })
-      .then((res) => {
-        setModalOpen(true);
-        setTitle("");
-        setContent("");
-      })
-      .catch((err) => console.log(err));
+
+    const res = await postBoardCreate({ title, content });
+
+    if (res.data === 1) {
+      setModalOpen(true);
+      setTitle("");
+      setContent("");
+    }
+
     setLoading(false);
   };
 
@@ -55,6 +55,7 @@ const AddBoardPage = () => {
             <input
               type="text"
               id="title"
+              value={title}
               onChange={(e) => setTitle(e.target.value)}
             />
           </div>
@@ -64,6 +65,7 @@ const AddBoardPage = () => {
             <input
               type="text"
               id="content"
+              value={content}
               onChange={(e) => setContent(e.target.value)}
             />
           </div>

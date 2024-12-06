@@ -25,4 +25,7 @@
     </update>
 
     <!--  게시글 수정  -->
+    <update id="updateBoard" parameterType="Board">
+        UPDATE BOARD SET TITLE=#{title}, CONTENT=#{content}, UPDATED_AT=NOW() WHERE BOARD_ID=#{board_id}
+    </update>
 </mapper>
