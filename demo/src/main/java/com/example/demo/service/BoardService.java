@@ -1,6 +1,6 @@
 package com.example.demo.service;
 
-import com.example.demo.domain.board.Board;
+import com.example.demo.domain.board.*;
 import com.example.demo.repository.BoardRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,14 +13,19 @@ public class BoardService {
     @Autowired
     BoardRepository boardRepository;
 
-    public List<Board> getAllBoardList(){
+    public List<GetBoardListResponse> getAllBoardList(){
         return boardRepository.getAllBoardList();
     }
-    public Board getBoardItem(int boardId){
+
+    public List<GetPaginationBoardListResponse> getPaginationBoardList(GetPaginationBoardListRequest payload){
+        return boardRepository.getPaginationBoardList(payload);
+    }
+
+    public GetBoardItemResponse getBoardItem(int boardId){
         return boardRepository.getBoardItem(boardId);
     }
 
-    public int insertBoard(Board board){
+    public int insertBoard(PostBoardItemRequest board){
         return boardRepository.insertBoard(board);
     }
 
@@ -28,5 +33,5 @@ public class BoardService {
         return boardRepository.softDeleteBoard(boardId);
     }
 
-    public int updateBoard(Board board) { return boardRepository.updateBoard(board); }
+    public int updateBoard(PostBoardItemUpdateRequest board) { return boardRepository.updateBoard(board); }
 }

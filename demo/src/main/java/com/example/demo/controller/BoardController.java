@@ -2,7 +2,7 @@ package com.example.demo.controller;
 
 import com.example.demo.common.CommonResponse;
 import com.example.demo.common.ResponseStatus;
-import com.example.demo.domain.board.Board;
+import com.example.demo.domain.board.*;
 import com.example.demo.service.BoardService;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,32 +20,38 @@ public class BoardController {
     }
 
     @GetMapping(value = "/list")
-    public CommonResponse<List<Board>>  getAllBoardList(){
-        CommonResponse<List<Board>> response = new CommonResponse<>(ResponseStatus.SUCCESS, boardService.getAllBoardList());
+    public CommonResponse<List<GetBoardListResponse>>  getAllBoardList(){
+        CommonResponse<List<GetBoardListResponse>> response = new CommonResponse<>(ResponseStatus.SUCCESS, boardService.getAllBoardList());
         return response;
     }
 
-    @GetMapping("/detail")
-    public CommonResponse<Board> getBoardItem(@RequestParam int boardId){
-        CommonResponse<Board> response = new CommonResponse<>(ResponseStatus.SUCCESS, boardService.getBoardItem(boardId));
+    @GetMapping(value ="/list")
+    public CommonResponse<List<GetPaginationBoardListResponse>> getPaginationBoardList(GetPaginationBoardListRequest payload){
+        CommonResponse<List<GetPaginationBoardListResponse>> response = new CommonResponse<>(ResponseStatus.SUCCESS, boardService.getPaginationBoardList(payload));
         return response;
     }
 
-    @PostMapping("/create")
-    public CommonResponse<Integer> insertBoard(@RequestBody Board payload){
-        CommonResponse<Integer> response = new CommonResponse<>(ResponseStatus.SUCCESS, boardService.insertBoard(payload));
+    @GetMapping(value ="/detail")
+    public CommonResponse<GetBoardItemResponse> getBoardItem(@RequestParam int boardId){
+        CommonResponse<GetBoardItemResponse> response = new CommonResponse<>(ResponseStatus.SUCCESS, boardService.getBoardItem(boardId));
         return response;
     }
 
-    @DeleteMapping("/delete")
+    @PostMapping(value ="/create")
+    public CommonResponse<Integer> insertBoard(@RequestBody PostBoardItemRequest board){
+        CommonResponse<Integer> response = new CommonResponse<>(ResponseStatus.SUCCESS, boardService.insertBoard(board));
+        return response;
+    }
+
+    @DeleteMapping(value ="/delete")
     public CommonResponse<Integer> softDeleteBoard(@RequestParam int boardId){
         CommonResponse<Integer> response = new CommonResponse<>(ResponseStatus.SUCCESS, boardService.softDeleteBoard(boardId));
         return response;
     }
 
-    @PostMapping("/update")
-    public CommonResponse<Integer> updateBoard(@RequestBody Board payload){
-        CommonResponse<Integer> response = new CommonResponse<>(ResponseStatus.SUCCESS, boardService.updateBoard(payload));
+    @PostMapping(value ="/update")
+    public CommonResponse<Integer> updateBoard(@RequestBody PostBoardItemUpdateRequest board){
+        CommonResponse<Integer> response = new CommonResponse<>(ResponseStatus.SUCCESS, boardService.updateBoard(board));
         return response;
     }
 }

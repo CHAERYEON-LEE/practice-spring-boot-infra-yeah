@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Board {
+public class GetBoardListResponse {
     private long board_id; // 게시물 id
     private String title; // 제목
     private String content; // 내용
