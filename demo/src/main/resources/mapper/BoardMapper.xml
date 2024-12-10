@@ -5,18 +5,37 @@
 
     <!-- 게시글 리스트 조회  -->
     <select id="getAllBoardList" resultType="GetBoardListResponse">
-        SELECT * FROM BOARD WHERE DELETE_YN != 'Y';
+        SELECT  *
+        FROM    BOARD
+        WHERE   DELETE_YN != 'Y'
     </select>
 
     <!--  페이지네이션 적용한 게시글 리스트 조회  -->
-    <select id="getPaginationBoardList" parameterType="GetPaginationBoardListRequest" resultType="GetPaginationBoardListResponse">
-        SELECT * FROM BOARD WHERE DELETE_YN != 'Y';
+    <select id="getPaginationBoardList" parameterType="GetPaginationBoardListRequest" resultType="com.example.demo.domain.board.GetPaginationBoardListResponse$Board">
+        SELECT  *
+        FROM    BOARD
+        WHERE   DELETE_YN != 'Y'
+        LIMIT   #{currentPage}, #{size}
+    </select>
+
+    <!-- 게시글 총 개수 조회 -->
+    <select id="getTotalCount" resultType="int">
+        SELECT  COUNT(*)
+        FROM    BOARD
+        WHERE   DELETE_YN != 'Y'
     </select>
 
     <!-- 상세 게시글 리스트 조회  -->
     <select id="getBoardItem" parameterType="int" resultType="GetBoardItemResponse" >
-        SELECT * FROM BOARD WHERE BOARD_ID = #{boardId};
+        SELECT * FROM BOARD WHERE BOARD_ID = #{boardId}
     </select>
+
+    <!--  상세페이지 views 조회수 증가  -->
+    <update id="increaseViewCount" parameterType="int">
+        UPDATE BOARD
+        SET VIEWS = VIEWS + 1
+        WHERE BOARD_ID = #{boardId}
+    </update>
 
     <!--  게시글 등록  -->
     <update id="insertBoard" parameterType="PostBoardItemRequest">

@@ -17,11 +17,22 @@ public class BoardService {
         return boardRepository.getAllBoardList();
     }
 
-    public List<GetPaginationBoardListResponse> getPaginationBoardList(GetPaginationBoardListRequest payload){
-        return boardRepository.getPaginationBoardList(payload);
+    public GetPaginationBoardListResponse getPaginationBoardList(GetPaginationBoardListRequest payload){
+        // 페이지네이션
+        int size = payload.getSize();
+        int currentPage = payload.getCurrentPage();
+        int totalCount = boardRepository.getTotalCount();
+        // 전체 페이지개수
+
+        GetPaginationBoardListResponse response = new GetPaginationBoardListResponse();
+        response.setPaginationData(size, currentPage, totalCount);
+        response.setBoardList(boardRepository.getPaginationBoardList(payload));
+        return response;
     }
 
     public GetBoardItemResponse getBoardItem(int boardId){
+        // 조회수 증가
+        boardRepository.increaseViewCount(boardId);
         return boardRepository.getBoardItem(boardId);
     }
 

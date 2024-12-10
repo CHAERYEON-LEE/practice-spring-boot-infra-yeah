@@ -11,6 +11,17 @@ export const getBoardList = async (detailId) => {
   return data;
 };
 
+export const getPaginationBoardList = async (size, currentPage) => {
+  const data = await axios
+    .get(
+      `${CONST.BOARD_LIST_PAGINATION}?size=${size}&currentPage=${currentPage}`
+    )
+    .then((res) => res.data)
+    .catch((err) => err);
+
+  return data;
+};
+
 // 게시판 상세
 export const getBoardDetail = async (detailId) => {
   const data = await axios

@@ -25,9 +25,13 @@ public class BoardController {
         return response;
     }
 
-    @GetMapping(value ="/list")
-    public CommonResponse<List<GetPaginationBoardListResponse>> getPaginationBoardList(GetPaginationBoardListRequest payload){
-        CommonResponse<List<GetPaginationBoardListResponse>> response = new CommonResponse<>(ResponseStatus.SUCCESS, boardService.getPaginationBoardList(payload));
+    @GetMapping(value ="/pagination-list")
+    public CommonResponse<GetPaginationBoardListResponse> getPaginationBoardList(@RequestParam(name = "size", required = true) int size,
+                                                                                 @RequestParam(name = "currentPage", required = true) int currentPage){
+
+        GetPaginationBoardListRequest payload = new GetPaginationBoardListRequest();
+        payload.setPayload(size, currentPage);
+        CommonResponse<GetPaginationBoardListResponse> response = new CommonResponse<>(ResponseStatus.SUCCESS, boardService.getPaginationBoardList(payload));
         return response;
     }
 

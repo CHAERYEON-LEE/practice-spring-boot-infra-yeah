@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Modal, Alert } from "antd";
 import { postBoardCreate } from "../../utils/api/board/boardApi";
+import styled from "styled-components";
 
 const AddBoardPage = () => {
   const navigate = useNavigate();
@@ -71,7 +72,7 @@ const AddBoardPage = () => {
           </div>
 
           <button type="button" onClick={postBoard}>
-            게시글 등록하기
+            게시글 등록
           </button>
           {alert ? (
             <Alert message="입력란을 모두 채워주세요!" type="error" closable />

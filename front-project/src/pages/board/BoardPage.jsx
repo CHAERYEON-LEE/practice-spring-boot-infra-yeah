@@ -1,9 +1,11 @@
 import { useState, useEffect } from "react";
-import axios from "axios";
-import { Table } from "antd";
+import { Table, Pagination } from "antd";
 import { BoardColumns } from "../../utils/boardColum";
 import { useNavigate } from "react-router-dom";
-import { getBoardList } from "../../utils/api/board/boardApi";
+import {
+  getBoardList,
+  getPaginationBoardList,
+} from "../../utils/api/board/boardApi";
 /**
  * /api/list response data
  * board_id; 게시물 id
@@ -18,16 +20,24 @@ import { getBoardList } from "../../utils/api/board/boardApi";
 
 const BoardPage = () => {
   const navigate = useNavigate();
+  const [size, setSize] = useState(10);
+  const [currentPage, setCurrentPage] = useState(0);
   const [serverData, setServerData] = useState("");
 
   useEffect(() => {
-    const getList = async () => {
-      const res = await getBoardList();
-      setServerData(res.data);
+    const getPaginationBoard = async () => {
+      try {
+        const res = await getPaginationBoardList(size, currentPage);
+        setServerData(res.data);
+      } catch (err) {
+        console.log(err);
+      }
     };
 
-    getList();
-  }, []);
+    getPaginationBoard();
+  }, [currentPage]);
+
+  const handlePageChange = (pageNumber) => setCurrentPage(pageNumber - 1);
 
   return (
     <div>
@@ -36,7 +46,16 @@ const BoardPage = () => {
       <button type="button" onClick={() => navigate("/board/create")}>
         게시글 등록하기
       </button>
-      <Table dataSource={serverData} columns={BoardColumns} pagination={10} />
+      <Table
+        dataSource={serverData.boardList}
+        columns={BoardColumns}
+        pagination={false}
+      />
+      <Pagination
+        defaultCurrent={currentPage + 1}
+        total={serverData.totalCount}
+        onChange={handlePageChange}
+      />
     </div>
   );
 };

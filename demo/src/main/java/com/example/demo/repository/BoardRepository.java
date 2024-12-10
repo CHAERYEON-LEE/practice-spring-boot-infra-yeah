@@ -8,9 +8,13 @@ import java.util.List;
 public interface BoardRepository {
     List<GetBoardListResponse> getAllBoardList();
 
-    List<GetPaginationBoardListResponse> getPaginationBoardList(GetPaginationBoardListRequest payload);
+    List<GetPaginationBoardListResponse.Board> getPaginationBoardList(GetPaginationBoardListRequest payload);
+
+    int getTotalCount();
 
     GetBoardItemResponse getBoardItem(int boardId);
+
+    void increaseViewCount(int boardId);
 
     int insertBoard(PostBoardItemRequest board);
 
