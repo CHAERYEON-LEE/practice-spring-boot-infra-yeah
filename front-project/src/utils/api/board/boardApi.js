@@ -2,7 +2,7 @@ import axios from "axios";
 import { CONST } from "../../constant";
 
 // 게시판 목록
-export const getBoardList = async (detailId) => {
+export const getBoardList = async () => {
   const data = await axios
     .get(`${CONST.BOARD_LIST}`)
     .then((res) => res.data)

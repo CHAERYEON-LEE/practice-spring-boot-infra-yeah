@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Card, Space } from "antd";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import { deleteBoard, getBoardDetail } from "../../utils/api/board/boardApi";
 import UpdateBoard from "./UpdateBoard";
@@ -48,21 +49,29 @@ const BoardDetail = () => {
             <>
               {serverData ? (
                 <>
-                  <div>
-                    <h1>게시글 번호 : {serverData.board_id}</h1>
-                    <h1>{serverData.title}</h1>
-                    <p>{serverData.content}</p>
-                  </div>
+                  <Space direction="vertical" size={16}>
+                    <Card
+                      title={`게시글 번호 : ${serverData.board_id} ${serverData.title}`}
+                      style={{ width: 300 }}
+                    >
+                      <p>{serverData.content}</p>
+                      <div style={{ display: "float", float: "right" }}>
+                        <button type="button" onClick={handleDeleteBoard}>
+                          삭제
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => setUpdateMode(true)}
+                        >
+                          수정
+                        </button>
+                      </div>
+                    </Card>
+                  </Space>
                 </>
               ) : (
                 ""
               )}
-              <button type="button" onClick={handleDeleteBoard}>
-                게시글 삭제하기
-              </button>
-              <button type="button" onClick={() => setUpdateMode(true)}>
-                게시글 수정하기
-              </button>
             </>
           )}
         </>

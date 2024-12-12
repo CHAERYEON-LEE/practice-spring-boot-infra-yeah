@@ -27,7 +27,8 @@ const BoardPage = () => {
   useEffect(() => {
     const getPaginationBoard = async () => {
       try {
-        const res = await getPaginationBoardList(size, currentPage);
+        const res = await getBoardList();
+        // const res = await getPaginationBoardList(size, currentPage);
         setServerData(res.data);
       } catch (err) {
         console.log(err);
@@ -46,16 +47,22 @@ const BoardPage = () => {
       <button type="button" onClick={() => navigate("/board/create")}>
         게시글 등록하기
       </button>
-      <Table
-        dataSource={serverData.boardList}
-        columns={BoardColumns}
-        pagination={false}
-      />
-      <Pagination
-        defaultCurrent={currentPage + 1}
-        total={serverData.totalCount}
-        onChange={handlePageChange}
-      />
+      {serverData ? (
+        <>
+          <Table
+            dataSource={serverData}
+            columns={BoardColumns}
+            // pagination={false}
+          />
+          <Pagination
+            defaultCurrent={currentPage + 1}
+            total={serverData.totalCount}
+            onChange={handlePageChange}
+          />
+        </>
+      ) : (
+        <p>데이터가없어요</p>
+      )}
     </div>
   );
 };
