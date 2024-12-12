@@ -27,16 +27,14 @@
 
     <!-- 상세 게시글 리스트 조회  -->
     <select id="getBoardItem" parameterType="int" resultType="GetBoardItemResponse" >
-        SELECT *
-        FROM   BOARD
-        WHERE  BOARD_ID = #{boardId}
+        SELECT * FROM BOARD WHERE BOARD_ID = #{boardId}
     </select>
 
     <!--  상세페이지 views 조회수 증가  -->
     <update id="increaseViewCount" parameterType="int">
         UPDATE BOARD
-        SET    VIEWS = VIEWS + 1
-        WHERE  BOARD_ID = #{boardId}
+        SET VIEWS = VIEWS + 1
+        WHERE BOARD_ID = #{boardId}
     </update>
 
     <!--  게시글 등록  -->
@@ -47,15 +45,11 @@
 
     <!--  게시글 삭제  -->
     <update id="softDeleteBoard" parameterType="int">
-        UPDATE BOARD
-        SET    DELETE_YN = 'Y'
-        WHERE  BOARD_ID = #{boardId}
+        UPDATE BOARD SET DELETE_YN = 'Y' WHERE BOARD_ID = #{boardId}
     </update>
 
     <!--  게시글 수정  -->
     <update id="updateBoard" parameterType="PostBoardItemUpdateRequest">
-        UPDATE BOARD
-        SET    TITLE=#{title}, CONTENT=#{content}, UPDATED_AT=NOW()
-        WHERE  BOARD_ID=#{board_id}
+        UPDATE BOARD SET TITLE=#{title}, CONTENT=#{content}, UPDATED_AT=NOW() WHERE BOARD_ID=#{board_id}
     </update>
 </mapper>

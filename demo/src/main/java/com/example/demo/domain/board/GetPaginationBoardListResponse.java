@@ -11,7 +11,9 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 public class GetPaginationBoardListResponse {
-    private PaginationInfo paginationInfo; // 페이지네이션 정보
+    private int size; // 한 페이지에서 보여줄 아이템 개수
+    private int currentPage; // 현재 요청 페이지
+    private int totalCount; // 아이템 총 개수
     private List<Board> boardList; // 게시물 목록
 
     @Getter
@@ -28,6 +30,12 @@ public class GetPaginationBoardListResponse {
         private LocalDateTime created_at; // 작성일자
         private LocalDateTime updated_at; // 수정일자
         private String delete_yn; // 삭제여부 Y, N
+    }
+
+    public void setPaginationData(int size, int currentPage, int totalCount){
+        this.size = size;
+        this.currentPage = currentPage;
+        this.totalCount = totalCount;
     }
 
     public void setBoardList(List<Board> boardList) {
