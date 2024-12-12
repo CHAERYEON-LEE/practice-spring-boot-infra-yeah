@@ -4,19 +4,19 @@
 <mapper namespace="com.example.demo.repository.BoardRepository">
 
     <!-- 게시글 리스트 조회  -->
-    <select id="getAllBoardList" resultType="BoardVo">
-        SELECT  BOARD_ID, TITLE, CONTENT, VIEWS, TAGS, CREATED_AT, UPDATED_AT, DELETE_YN
+    <select id="getAllBoardList" resultType="GetBoardListResponse">
+        SELECT  *
         FROM    BOARD
         WHERE   DELETE_YN != 'Y'
     </select>
 
-<!--    &lt;!&ndash;  페이지네이션 적용한 게시글 리스트 조회  &ndash;&gt;-->
-<!--    <select id="getPaginationBoardList" parameterType="PaginationBoardParams" resultType="BoardVo">-->
-<!--        SELECT  BOARD_ID, TITLE, CONTENT, VIEWS, TAGS, CREATED_AT, UPDATED_AT, DELETE_YN-->
-<!--        FROM    BOARD-->
-<!--        WHERE   DELETE_YN != 'Y'-->
-<!--        LIMIT   #{currentPage}, #{size}-->
-<!--    </select>-->
+    <!--  페이지네이션 적용한 게시글 리스트 조회  -->
+    <select id="getPaginationBoardList" parameterType="GetPaginationBoardListRequest" resultType="com.example.demo.domain.board.GetPaginationBoardListResponse$Board">
+        SELECT  *
+        FROM    BOARD
+        WHERE   DELETE_YN != 'Y'
+        LIMIT   #{currentPage}, #{size}
+    </select>
 
     <!-- 게시글 총 개수 조회 -->
     <select id="getTotalCount" resultType="int">
@@ -26,8 +26,8 @@
     </select>
 
     <!-- 상세 게시글 리스트 조회  -->
-    <select id="getBoardItem" parameterType="int" resultType="BoardVo" >
-        SELECT BOARD_ID, TITLE, CONTENT, VIEWS, TAGS, CREATED_AT, UPDATED_AT, DELETE_YN
+    <select id="getBoardItem" parameterType="int" resultType="GetBoardItemResponse" >
+        SELECT *
         FROM   BOARD
         WHERE  BOARD_ID = #{boardId}
     </select>
@@ -40,9 +40,9 @@
     </update>
 
     <!--  게시글 등록  -->
-    <update id="insertBoard" parameterType="PostBoardParams">
+    <update id="insertBoard" parameterType="PostBoardItemRequest">
         INSERT INTO BOARD (TITLE, CONTENT, VIEWS, TAGS, CREATED_AT, UPDATED_AT, DELETE_YN)
-        VALUES (#{title}, #{content}, 0, #{tags}, NOW(), NOW(), 'N')
+        VALUES (#{title}, #{content}, #{views}, #{tags}, NOW(), NOW(), 'N')
     </update>
 
     <!--  게시글 삭제  -->
@@ -53,7 +53,7 @@
     </update>
 
     <!--  게시글 수정  -->
-    <update id="updateBoard" parameterType="UpdateBoardParams">
+    <update id="updateBoard" parameterType="PostBoardItemUpdateRequest">
         UPDATE BOARD
         SET    TITLE=#{title}, CONTENT=#{content}, UPDATED_AT=NOW()
         WHERE  BOARD_ID=#{board_id}
