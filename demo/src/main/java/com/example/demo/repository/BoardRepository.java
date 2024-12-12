@@ -1,25 +1,24 @@
 package com.example.demo.repository;
-import com.example.demo.domain.board.params.*;
-import com.example.demo.domain.board.vo.*;
+import com.example.demo.domain.board.*;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
 
 @Mapper
 public interface BoardRepository {
-    List<BoardVo> getAllBoardList();
+    List<GetBoardListResponse> getAllBoardList();
 
-//    List<BoardVo> getPaginationBoardList(PaginationBoardParams payload);
+    List<GetPaginationBoardListResponse.Board> getPaginationBoardList(GetPaginationBoardListRequest payload);
 
     int getTotalCount();
 
-    BoardVo getBoardItem(int boardId);
+    GetBoardItemResponse getBoardItem(int boardId);
 
     void increaseViewCount(int boardId);
 
-    int insertBoard(PostBoardParams payload);
+    int insertBoard(PostBoardItemRequest board);
 
     int softDeleteBoard(int boardId);
 
-    int updateBoard(UpdateBoardParams payload);
+    int updateBoard(PostBoardItemUpdateRequest board);
 }

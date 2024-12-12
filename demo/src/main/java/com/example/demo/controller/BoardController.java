@@ -2,7 +2,7 @@ package com.example.demo.controller;
 
 import com.example.demo.common.CommonResponse;
 import com.example.demo.common.ResponseStatus;
-import com.example.demo.domain.board.dto.*;
+import com.example.demo.domain.board.*;
 import com.example.demo.service.BoardService;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,44 +15,47 @@ public class BoardController {
 
     private final BoardService boardService;
 
-    public BoardController(BoardService boardService) {
+    public BoardController(BoardService boardService){
         this.boardService = boardService;
     }
 
     @GetMapping(value = "/list")
-    public CommonResponse<List<GetBoardListResponse>> getAllBoardList() {
-        List<GetBoardListResponse> response = boardService.getAllBoardList();
-        return new CommonResponse<>(ResponseStatus.SUCCESS, response);
+    public CommonResponse<List<GetBoardListResponse>>  getAllBoardList(){
+        CommonResponse<List<GetBoardListResponse>> response = new CommonResponse<>(ResponseStatus.SUCCESS, boardService.getAllBoardList());
+        return response;
     }
 
-//    @GetMapping(value ="/pagination-list")
-//    public CommonResponse<GetPaginationBoardListResponse> getPaginationBoardList(@RequestParam GetPaginationBoardListRequest payload){
-//
-//        GetPaginationBoardListResponse response = boardService.getPaginationBoardList(payload);
-//        return new CommonResponse<>(ResponseStatus.SUCCESS, response);
-//    }
+    @GetMapping(value ="/pagination-list")
+    public CommonResponse<GetPaginationBoardListResponse> getPaginationBoardList(@RequestParam(name = "size", required = true) int size,
+                                                                                 @RequestParam(name = "currentPage", required = true) int currentPage){
+
+        GetPaginationBoardListRequest payload = new GetPaginationBoardListRequest();
+        payload.setPayload(size, currentPage);
+        CommonResponse<GetPaginationBoardListResponse> response = new CommonResponse<>(ResponseStatus.SUCCESS, boardService.getPaginationBoardList(payload));
+        return response;
+    }
 
     @GetMapping(value ="/detail")
     public CommonResponse<GetBoardItemResponse> getBoardItem(@RequestParam int boardId){
-        GetBoardItemResponse response = boardService.getBoardItem(boardId);
-        return new CommonResponse<>(ResponseStatus.SUCCESS, response);
+        CommonResponse<GetBoardItemResponse> response = new CommonResponse<>(ResponseStatus.SUCCESS, boardService.getBoardItem(boardId));
+        return response;
     }
 
     @PostMapping(value ="/create")
     public CommonResponse<Integer> insertBoard(@RequestBody PostBoardItemRequest board){
-        int response = boardService.insertBoard(board);
-        return new CommonResponse<>(ResponseStatus.SUCCESS, response);
+        CommonResponse<Integer> response = new CommonResponse<>(ResponseStatus.SUCCESS, boardService.insertBoard(board));
+        return response;
     }
 
     @DeleteMapping(value ="/delete")
     public CommonResponse<Integer> softDeleteBoard(@RequestParam int boardId){
-        int response = boardService.softDeleteBoard(boardId);
-        return new CommonResponse<>(ResponseStatus.SUCCESS, response);
+        CommonResponse<Integer> response = new CommonResponse<>(ResponseStatus.SUCCESS, boardService.softDeleteBoard(boardId));
+        return response;
     }
 
     @PostMapping(value ="/update")
     public CommonResponse<Integer> updateBoard(@RequestBody PostBoardItemUpdateRequest board){
-        int response = boardService.updateBoard(board);
-        return new CommonResponse<>(ResponseStatus.SUCCESS, response);
+        CommonResponse<Integer> response = new CommonResponse<>(ResponseStatus.SUCCESS, boardService.updateBoard(board));
+        return response;
     }
 }
