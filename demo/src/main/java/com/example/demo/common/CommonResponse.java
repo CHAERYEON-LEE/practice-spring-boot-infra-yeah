@@ -1,8 +1,11 @@
 package com.example.demo.common;
 
+import com.example.demo.domain.board.dto.GetBoardListResponse;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+
+import java.util.List;
 
 @Getter
 @NoArgsConstructor

@@ -1,15 +1,8 @@
 package com.example.demo.domain.board;
 
-import lombok.*;
-
 import java.time.LocalDateTime;
 
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
-public class GetBoardListResponse {
+public class Board {
     private long board_id; // 게시물 id
     private String title; // 제목
     private String content; // 내용
