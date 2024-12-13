@@ -27,7 +27,8 @@ const BoardPage = () => {
   useEffect(() => {
     const getPaginationBoard = async () => {
       try {
-        const res = await getPaginationBoardList(size, currentPage);
+        const res = await getBoardList();
+        // const res = await getPaginationBoardList(size, currentPage);
         setServerData(res.data);
       } catch (err) {
         console.log(err);
@@ -47,9 +48,10 @@ const BoardPage = () => {
         게시글 등록하기
       </button>
       <Table
-        dataSource={serverData.boardList}
+        // dataSource={serverData.boardList}
+        dataSource={serverData}
         columns={BoardColumns}
-        pagination={false}
+        // pagination={false}
       />
       <Pagination
         defaultCurrent={currentPage + 1}

@@ -4,13 +4,13 @@
 <mapper namespace="com.example.demo.repository.BoardRepository">
 
     <!-- 게시글 리스트 조회  -->
-    <select id="getAllBoardList" resultType="BoardVo">
+    <select id="selectAllBoardList" resultType="GetBoardListResponse">
         SELECT  BOARD_ID, TITLE, CONTENT, VIEWS, TAGS, CREATED_AT, UPDATED_AT, DELETE_YN
         FROM    BOARD
         WHERE   DELETE_YN != 'Y'
     </select>
 
-<!--    &lt;!&ndash;  페이지네이션 적용한 게시글 리스트 조회  &ndash;&gt;-->
+    <!--  페이지네이션 적용한 게시글 리스트 조회  -->
 <!--    <select id="getPaginationBoardList" parameterType="PaginationBoardParams" resultType="BoardVo">-->
 <!--        SELECT  BOARD_ID, TITLE, CONTENT, VIEWS, TAGS, CREATED_AT, UPDATED_AT, DELETE_YN-->
 <!--        FROM    BOARD-->
@@ -19,41 +19,41 @@
 <!--    </select>-->
 
     <!-- 게시글 총 개수 조회 -->
-    <select id="getTotalCount" resultType="int">
+    <select id="selectTotalCount" resultType="int">
         SELECT  COUNT(*)
         FROM    BOARD
         WHERE   DELETE_YN != 'Y'
     </select>
 
     <!-- 상세 게시글 리스트 조회  -->
-    <select id="getBoardItem" parameterType="int" resultType="BoardVo" >
+    <select id="selectBoardItem" parameterType="int" resultType="GetBoardItemResponse" >
         SELECT BOARD_ID, TITLE, CONTENT, VIEWS, TAGS, CREATED_AT, UPDATED_AT, DELETE_YN
         FROM   BOARD
         WHERE  BOARD_ID = #{boardId}
     </select>
 
     <!--  상세페이지 views 조회수 증가  -->
-    <update id="increaseViewCount" parameterType="int">
+    <update id="updateIncreaseViewCount" parameterType="int">
         UPDATE BOARD
         SET    VIEWS = VIEWS + 1
         WHERE  BOARD_ID = #{boardId}
     </update>
 
     <!--  게시글 등록  -->
-    <update id="insertBoard" parameterType="PostBoardParams">
+    <update id="insertBoard" parameterType="PostBoardItemRequest">
         INSERT INTO BOARD (TITLE, CONTENT, VIEWS, TAGS, CREATED_AT, UPDATED_AT, DELETE_YN)
         VALUES (#{title}, #{content}, 0, #{tags}, NOW(), NOW(), 'N')
     </update>
 
     <!--  게시글 삭제  -->
-    <update id="softDeleteBoard" parameterType="int">
+    <update id="deleteBoard" parameterType="int">
         UPDATE BOARD
         SET    DELETE_YN = 'Y'
         WHERE  BOARD_ID = #{boardId}
     </update>
 
     <!--  게시글 수정  -->
-    <update id="updateBoard" parameterType="UpdateBoardParams">
+    <update id="updateBoard" parameterType="PostBoardItemUpdateRequest">
         UPDATE BOARD
         SET    TITLE=#{title}, CONTENT=#{content}, UPDATED_AT=NOW()
         WHERE  BOARD_ID=#{board_id}

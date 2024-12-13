@@ -2,7 +2,7 @@ import axios from "axios";
 import { CONST } from "../../constant";
 
 // 게시판 목록
-export const getBoardList = async (detailId) => {
+export const getBoardList = async () => {
   const data = await axios
     .get(`${CONST.BOARD_LIST}`)
     .then((res) => res.data)
@@ -25,7 +25,7 @@ export const getPaginationBoardList = async (size, currentPage) => {
 // 게시판 상세
 export const getBoardDetail = async (detailId) => {
   const data = await axios
-    .get(`${CONST.BOARD_DETAIL}?boardId=${detailId}`)
+    .get(`${CONST.BOARD_DETAIL}/${detailId}`)
     .then((res) => res.data)
     .catch((err) => err);
 

@@ -6,19 +6,19 @@ import java.util.List;
 
 @Mapper
 public interface BoardRepository {
-    List<GetBoardListResponse> getAllBoardList();
+    List<GetBoardListResponse> selectAllBoardList();
 
-    List<GetPaginationBoardListResponse.Board> getPaginationBoardList(GetPaginationBoardListRequest payload);
+//    List<GetPaginationBoardListResponse.Board> getPaginationBoardList(GetPaginationBoardListRequest payload);
 
-    int getTotalCount();
+    int selectTotalCount();
 
-    GetBoardItemResponse getBoardItem(int boardId);
+    GetBoardItemResponse selectBoardItem(int boardId);
 
-    void increaseViewCount(int boardId);
+    void updateIncreaseViewCount(int boardId);
 
     int insertBoard(PostBoardItemRequest board);
 
-    int softDeleteBoard(int boardId);
+    int deleteBoard(int boardId);
 
     int updateBoard(PostBoardItemUpdateRequest board);
 }

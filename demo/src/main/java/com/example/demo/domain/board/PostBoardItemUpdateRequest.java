@@ -1,16 +1,18 @@
 package com.example.demo.domain.board;
 
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 import java.time.LocalDateTime;
 
 @Getter
-@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 public class PostBoardItemUpdateRequest {
     private long board_id; // 게시물 id
+
+    @NotNull
     private String title; // 제목
     private String content; // 내용
     private long views; // 조회수
