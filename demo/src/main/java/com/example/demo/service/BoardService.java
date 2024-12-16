@@ -3,7 +3,6 @@ package com.example.demo.service;
 import com.example.demo.domain.board.*;
 import com.example.demo.repository.BoardRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,18 +18,15 @@ public class BoardService {
         return boardRepository.selectAllBoardList();
     }
 
-//    public GetPaginationBoardListResponse getPaginationBoardList(GetPaginationBoardListRequest payload){
-//        // 페이지네이션
-//        int size = payload.getSize();
-//        int currentPage = payload.getCurrentPage();
-//        int totalCount = boardRepository.selectTotalCount();
-//        // 전체 페이지개수
-//
-//        GetPaginationBoardListResponse response = new GetPaginationBoardListResponse();
-//        response.setPaginationData(size, currentPage, totalCount);
-//        response.setBoardList(boardRepository.getPaginationBoardList(payload));
-//        return response;
-//    }
+    public GetPaginationBoardListResponse selectPagingBoardList(int pageSize, int pageNum){
+        List<GetBoardListResponse> boardList = boardRepository.selectPagingBoardList(pageSize, pageNum * pageSize);
+
+        GetPaginationBoardListResponse paginationBoardResponse = new GetPaginationBoardListResponse();
+        paginationBoardResponse.setBoardList(boardList);
+        paginationBoardResponse.setPaginationInfo(pageNum, pageSize, boardRepository.selectTotalCount());
+
+        return paginationBoardResponse;
+    }
 
     public GetBoardItemResponse selectBoardItem(int boardId){
         // 조회수 증가
@@ -38,9 +34,7 @@ public class BoardService {
         return boardRepository.selectBoardItem(boardId);
     }
 
-    public int insertBoard(PostBoardItemRequest board){
-        return boardRepository.insertBoard(board);
-    }
+    public int insertBoard(PostBoardItemRequest board){ return boardRepository.insertBoard(board); }
 
     public int deleteBoard(int boardId){
         return boardRepository.deleteBoard(boardId);

@@ -1,10 +1,11 @@
 import { useState, useEffect } from "react";
-import { Table, Pagination } from "antd";
-import { BoardColumns } from "../../utils/boardColum";
 import { useNavigate } from "react-router-dom";
+import styled from "styled-components";
+
+import PaginationTable from "./PaginationTable";
 import {
-  getBoardList,
   getPaginationBoardList,
+  getBoardList,
 } from "../../utils/api/board/boardApi";
 /**
  * /api/list response data
@@ -20,46 +21,70 @@ import {
 
 const BoardPage = () => {
   const navigate = useNavigate();
-  const [size, setSize] = useState(10);
-  const [currentPage, setCurrentPage] = useState(0);
-  const [serverData, setServerData] = useState("");
+  // 기본 페이지네이션 상태
+  const [basePntSize, setBasePntSize] = useState(10);
+  const [basePntCurrentPage, setBasePntCurrentPage] = useState(0);
+  const [basePntServerData, setBasePntServerData] = useState("");
+  // 무한 스크롤 상태
+  const [infiniteScrollSize, setInfiniteScrollSize] = useState(10);
+  const [infiniteScrollCurrentPage, setInfiniteScrollCurrentPage] = useState(0);
+  const [infiniteScrollServerData, setInfiniteScrollServerData] = useState("");
 
   useEffect(() => {
     const getPaginationBoard = async () => {
       try {
-        const res = await getBoardList();
-        // const res = await getPaginationBoardList(size, currentPage);
-        setServerData(res.data);
+        // const res = await getBoardList();
+        const res = await getPaginationBoardList(
+          basePntSize,
+          basePntCurrentPage
+        );
+        setBasePntServerData(res.data);
       } catch (err) {
         console.log(err);
       }
     };
 
     getPaginationBoard();
-  }, [currentPage]);
+  }, [basePntCurrentPage]);
 
-  const handlePageChange = (pageNumber) => setCurrentPage(pageNumber - 1);
+  const handleBasePntChange = (pageNumber) =>
+    setBasePntCurrentPage(pageNumber - 1);
+  const handleInfiniteScrollPntChange = (pageNumber) =>
+    setInfiniteScrollCurrentPage(pageNumber - 1);
 
   return (
     <div>
-      <h1>게시판</h1>
-      <h3>목록</h3>
-      <button type="button" onClick={() => navigate("/board/create")}>
-        게시글 등록하기
-      </button>
-      <Table
-        // dataSource={serverData.boardList}
-        dataSource={serverData}
-        columns={BoardColumns}
-        // pagination={false}
-      />
-      <Pagination
-        defaultCurrent={currentPage + 1}
-        total={serverData.totalCount}
-        onChange={handlePageChange}
-      />
+      <Header>
+        <button type="button" onClick={() => navigate("/board/create")}>
+          게시글 등록하기
+        </button>
+      </Header>
+      <BoardContainer>
+        <PaginationTable
+          title="기본 페이지네이션"
+          serverData={basePntServerData}
+          size={basePntSize}
+          currentPage={basePntCurrentPage}
+          handlePageChange={handleBasePntChange}
+        />
+        <PaginationTable
+          title="무한스크롤 페이지네이션"
+          serverData={infiniteScrollServerData}
+          size={infiniteScrollSize}
+          currentPage={infiniteScrollCurrentPage}
+          handlePageChange={handleInfiniteScrollPntChange}
+        />
+      </BoardContainer>
     </div>
   );
 };
 
 export default BoardPage;
+
+const Header = styled.div`
+  text-align: center;
+`;
+
+const BoardContainer = styled.div`
+  display: flex;
+`;

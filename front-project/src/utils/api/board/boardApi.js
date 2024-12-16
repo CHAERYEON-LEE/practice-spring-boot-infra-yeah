@@ -14,7 +14,7 @@ export const getBoardList = async () => {
 export const getPaginationBoardList = async (size, currentPage) => {
   const data = await axios
     .get(
-      `${CONST.BOARD_LIST_PAGINATION}?size=${size}&currentPage=${currentPage}`
+      `${CONST.BOARD_LIST_PAGINATION}?pageSize=${size}&pageNum=${currentPage}`
     )
     .then((res) => res.data)
     .catch((err) => err);

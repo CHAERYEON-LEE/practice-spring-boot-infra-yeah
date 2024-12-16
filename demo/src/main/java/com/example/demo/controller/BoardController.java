@@ -4,6 +4,7 @@ import com.example.demo.common.CommonResponse;
 import com.example.demo.common.ResponseStatus;
 import com.example.demo.domain.board.*;
 import com.example.demo.service.BoardService;
+import com.github.pagehelper.PageInfo;
 import jakarta.validation.Valid;
 import lombok.*;
 import org.springframework.web.bind.annotation.*;
@@ -22,35 +23,33 @@ public class BoardController {
 
     @GetMapping(value = "/list", produces = "application/json;utf-8")
     public CommonResponse<List<GetBoardListResponse>>  getAllBoardList(){
-        CommonResponse<List<GetBoardListResponse>> response = new CommonResponse<>(ResponseStatus.SUCCESS, boardService.getAllBoardList());
-        return response;
+        List<GetBoardListResponse> boardResponse = boardService.getAllBoardList();
+        return new CommonResponse<>(ResponseStatus.SUCCESS, boardResponse);
     }
 
-//    @GetMapping(value ="/pagination-list")
-//    public CommonResponse<GetPaginationBoardListResponse> getPaginationBoardList(@RequestParam int size, @RequestParam int currentPage){
-//
-//        GetPaginationBoardListRequest payload = new GetPaginationBoardListRequest();
-//        payload.setPayload(size, currentPage);
-//        CommonResponse<GetPaginationBoardListResponse> response = new CommonResponse<>(ResponseStatus.SUCCESS, boardService.getPaginationBoardList(payload));
-//        return response;
-//    }
+    @GetMapping(value ="/pagination-list")
+    public CommonResponse<GetPaginationBoardListResponse> getPaginationBoardList(@RequestParam int pageSize, @RequestParam int pageNum){
+        GetPaginationBoardListResponse paginationBoardResponse = boardService.selectPagingBoardList(pageSize, pageNum);
+        return new CommonResponse<>(ResponseStatus.SUCCESS, paginationBoardResponse);
+    }
 
     @GetMapping(value ="/detail/{boardId}", produces = "application/json;utf-8")
     public CommonResponse<GetBoardItemResponse> getBoardItem(@PathVariable("boardId") int boardId){
-        CommonResponse<GetBoardItemResponse> response = new CommonResponse<>(ResponseStatus.SUCCESS, boardService.selectBoardItem(boardId));
-        return response;
+        GetBoardItemResponse itemReponse = boardService.selectBoardItem(boardId);
+        return new CommonResponse<>(ResponseStatus.SUCCESS, itemReponse);
     }
 
     @PostMapping(value ="/create", produces = "application/json;utf-8")
     public CommonResponse<Integer> insertBoard(@RequestBody PostBoardItemRequest board){
-        CommonResponse<Integer> response = new CommonResponse<>(ResponseStatus.SUCCESS, boardService.insertBoard(board));
-        return response;
+        int result = boardService.insertBoard(board);
+        return new CommonResponse<>(ResponseStatus.SUCCESS, result);
     }
 
     @DeleteMapping(value ="/delete", produces = "application/json;utf-8")
     public CommonResponse<Integer> softDeleteBoard(@PathVariable("boardId") int boardId){
-        CommonResponse<Integer> response = new CommonResponse<>(ResponseStatus.SUCCESS, boardService.deleteBoard(boardId));
-        return response;
+        int result = boardService.deleteBoard(boardId);
+        return new CommonResponse<>(ResponseStatus.SUCCESS, result);
+
     }
 
     @PostMapping(value ="/update", produces = "application/json;utf-8")

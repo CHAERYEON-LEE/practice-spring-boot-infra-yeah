@@ -11,25 +11,18 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 public class GetPaginationBoardListResponse {
-    private List<Board> boardList; // 게시물 목록
+    private int pageNum;
+    private int pageSize;
+    private int totalCnt;
+    private List<GetBoardListResponse> boardList; // 게시물 목록
 
-    @Getter
-    @Setter
-    @NoArgsConstructor
-    @AllArgsConstructor
-    @Builder
-    public static class Board {
-        private long board_id; // 게시물 id
-        private String title; // 제목
-        private String content; // 내용
-        private long views; // 조회수
-        private String tags; // 태그이름
-        private LocalDateTime created_at; // 작성일자
-        private LocalDateTime updated_at; // 수정일자
-        private String delete_yn; // 삭제여부 Y, N
+    public void setBoardList(List<GetBoardListResponse> boardList) {
+        this.boardList = boardList;
     }
 
-    public void setBoardList(List<Board> boardList) {
-        this.boardList = boardList;
+    public void setPaginationInfo (int pageNum, int pageSize, int totalCnt) {
+        this.pageNum = pageNum;
+        this.pageSize = pageSize;
+        this.totalCnt = totalCnt;
     }
 }
