@@ -25,6 +25,8 @@ mybatis:
   # 타입 별칭을 자동으로 스캔할 패키지의 위치 지정
   # 해당 패키지와 하위 패키지에서 MyBatis가 사용할 수 있는 타입 별칭을 정의한 클래스 검색
   type-aliases-package: com.example.demo
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 
 springdoc:
   packages-to-scan: 스캔할 패키지 명

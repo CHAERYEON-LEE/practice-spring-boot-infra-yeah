@@ -1,5 +1,7 @@
 package com.example.demo.service;
 
+import com.example.demo.common.CommonResponse;
+import com.example.demo.common.ResponseStatus;
 import com.example.demo.domain.board.*;
 import com.example.demo.repository.BoardRepository;
 import lombok.RequiredArgsConstructor;
@@ -7,38 +9,63 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-// BoardMapper를 주입받아, 데이터베이스로부터 게시물 목록을 가져오는 비즈니스 로직
 @Service
 @RequiredArgsConstructor
 public class BoardService {
 
     private final BoardRepository boardRepository;
 
-    public List<GetBoardListResponse> getAllBoardList(){
-        return boardRepository.selectAllBoardList();
+    public CommonResponse<List<GetBoardListResponse>> getAllBoardList() {
+        List<GetBoardListResponse> boardResponse = boardRepository.selectAllBoardList();
+        return new CommonResponse<>(ResponseStatus.SUCCESS, boardResponse);
     }
 
-    public GetPaginationBoardListResponse selectPagingBoardList(int pageSize, int pageNum){
+    public CommonResponse<GetPaginationBoardListResponse> selectPagingBoardList(int pageSize, int pageNum) {
         List<GetBoardListResponse> boardList = boardRepository.selectPagingBoardList(pageSize, pageNum * pageSize);
 
-        GetPaginationBoardListResponse paginationBoardResponse = new GetPaginationBoardListResponse();
-        paginationBoardResponse.setBoardList(boardList);
-        paginationBoardResponse.setPaginationInfo(pageNum, pageSize, boardRepository.selectTotalCount());
+        GetPaginationBoardListResponse paginationBoardResponse = GetPaginationBoardListResponse.builder()
+                .boardList(boardList)
+                .pageNum(pageNum)
+                .pageSize(pageSize)
+                .totalCnt(boardRepository.selectTotalCount())
+                .build();
 
-        return paginationBoardResponse;
+        return new CommonResponse<>(ResponseStatus.SUCCESS, paginationBoardResponse);
     }
 
-    public GetBoardItemResponse selectBoardItem(int boardId){
-        // 조회수 증가
+    public CommonResponse<GetInfinitePaginationBoardListResponse> selectInfinitePagingBoardList(int pageSize, Long lastBoardId) {
+        if (lastBoardId == null) lastBoardId = Long.MAX_VALUE;
+
+        List<GetBoardListResponse> boardList = boardRepository.selectInfinitePagingBoardList(pageSize, lastBoardId);
+
+        GetInfinitePaginationBoardListResponse infinitePaginationBoardResponse = GetInfinitePaginationBoardListResponse.builder()
+                .boardList(boardList)
+                .pageSize(pageSize)
+                .hasMore(boardList.size() < pageSize ? 0 : 1)
+                .totalCnt(boardRepository.selectTotalCount())
+                .build();
+
+        return new CommonResponse<>(ResponseStatus.SUCCESS, infinitePaginationBoardResponse);
+    }
+
+    public CommonResponse<GetBoardItemResponse> selectBoardItem(int boardId) {
         boardRepository.updateIncreaseViewCount(boardId);
-        return boardRepository.selectBoardItem(boardId);
+        GetBoardItemResponse itemReponse = boardRepository.selectBoardItem(boardId);
+        return new CommonResponse<>(ResponseStatus.SUCCESS, itemReponse);
     }
 
-    public int insertBoard(PostBoardItemRequest board){ return boardRepository.insertBoard(board); }
-
-    public int deleteBoard(int boardId){
-        return boardRepository.deleteBoard(boardId);
+    public CommonResponse<Integer> insertBoard(PostBoardItemRequest board) {
+        int result = boardRepository.insertBoard(board);
+        return new CommonResponse<>(ResponseStatus.SUCCESS, result);
     }
 
-    public int updateBoard(PostBoardItemUpdateRequest board) { return boardRepository.updateBoard(board); }
+    public CommonResponse<Integer> deleteBoard(int boardId) {
+        int result = boardRepository.deleteBoard(boardId);
+        return new CommonResponse<>(ResponseStatus.SUCCESS, result);
+    }
+
+    public CommonResponse<Integer> updateBoard(PostBoardItemUpdateRequest board) {
+        int result = boardRepository.updateBoard(board);
+        return new CommonResponse<>(ResponseStatus.SUCCESS, result);
+    }
 }

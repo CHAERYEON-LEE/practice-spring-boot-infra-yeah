@@ -11,6 +11,8 @@ public interface BoardRepository {
 
     List<GetBoardListResponse> selectPagingBoardList(int pageSize, int pageNum);
 
+    List<GetBoardListResponse> selectInfinitePagingBoardList(int pageSize, Long lastBoardId);
+
     int selectTotalCount();
 
     GetBoardItemResponse selectBoardItem(int boardId);

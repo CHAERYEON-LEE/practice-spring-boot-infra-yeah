@@ -3,9 +3,10 @@ import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
 import PaginationTable from "./PaginationTable";
+import InfinitePaginationTable from "./InfinitePaginationTable";
 import {
   getPaginationBoardList,
-  getBoardList,
+  getInfinitePaginationBoardList,
 } from "../../utils/api/board/boardApi";
 /**
  * /api/list response data
@@ -27,13 +28,17 @@ const BoardPage = () => {
   const [basePntServerData, setBasePntServerData] = useState("");
   // 무한 스크롤 상태
   const [infiniteScrollSize, setInfiniteScrollSize] = useState(10);
-  const [infiniteScrollCurrentPage, setInfiniteScrollCurrentPage] = useState(0);
+  const [infiniteScrollLastId, setInfiniteScrollLastId] = useState(null);
   const [infiniteScrollServerData, setInfiniteScrollServerData] = useState("");
+  const [hasMore, setHasMore] = useState(true);
+
+  useEffect(() => {
+    getInfinitePaginationBoard();
+  }, []);
 
   useEffect(() => {
     const getPaginationBoard = async () => {
       try {
-        // const res = await getBoardList();
         const res = await getPaginationBoardList(
           basePntSize,
           basePntCurrentPage
@@ -47,10 +52,26 @@ const BoardPage = () => {
     getPaginationBoard();
   }, [basePntCurrentPage]);
 
+  const getInfinitePaginationBoard = async () => {
+    try {
+      const res = await getInfinitePaginationBoardList(
+        infiniteScrollSize,
+        infiniteScrollLastId
+      );
+      setInfiniteScrollServerData((prev) => [...prev, ...res.data.boardList]);
+      setInfiniteScrollLastId(res.data.boardList.at(-1)["board_id"]);
+      setHasMore(res.data.hasMore ? true : false);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   const handleBasePntChange = (pageNumber) =>
     setBasePntCurrentPage(pageNumber - 1);
-  const handleInfiniteScrollPntChange = (pageNumber) =>
-    setInfiniteScrollCurrentPage(pageNumber - 1);
+
+  const handleInfiniteScrollPntChange = (boardLastId) => {
+    if (hasMore) getInfinitePaginationBoard();
+  };
 
   return (
     <div>
@@ -67,12 +88,10 @@ const BoardPage = () => {
           currentPage={basePntCurrentPage}
           handlePageChange={handleBasePntChange}
         />
-        <PaginationTable
-          title="무한스크롤 페이지네이션"
+        <InfinitePaginationTable
           serverData={infiniteScrollServerData}
-          size={infiniteScrollSize}
-          currentPage={infiniteScrollCurrentPage}
-          handlePageChange={handleInfiniteScrollPntChange}
+          handleScrollChange={handleInfiniteScrollPntChange}
+          hasMore={hasMore}
         />
       </BoardContainer>
     </div>

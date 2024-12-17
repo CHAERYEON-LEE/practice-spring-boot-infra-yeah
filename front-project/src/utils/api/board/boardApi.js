@@ -22,6 +22,20 @@ export const getPaginationBoardList = async (size, currentPage) => {
   return data;
 };
 
+export const getInfinitePaginationBoardList = async (size, lastBoardId) => {
+  const queryParams =
+    lastBoardId === null
+      ? `?pageSize=${size}`
+      : `?pageSize=${size}&lastBoardId=${lastBoardId}`;
+
+  const data = await axios
+    .get(`${CONST.BOARD_LIST_INFINITE_PAGINATION}${queryParams}`)
+    .then((res) => res.data)
+    .catch((err) => err);
+
+  return data;
+};
+
 // 게시판 상세
 export const getBoardDetail = async (detailId) => {
   const data = await axios

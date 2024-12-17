@@ -2,7 +2,6 @@ package com.example.demo.domain.board;
 
 import lombok.*;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
@@ -10,9 +9,9 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class GetPaginationBoardListResponse {
-    private int pageNum;
+public class GetInfinitePaginationBoardListResponse {
     private int pageSize;
     private int totalCnt;
+    private int hasMore;
     private List<GetBoardListResponse> boardList; // 게시물 목록
 }

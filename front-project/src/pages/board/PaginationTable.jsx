@@ -5,7 +5,7 @@ import { BoardColumns } from "../../utils/boardColum";
 
 const PaginationTable = (props) => {
   const { title, serverData, size, currentPage, handlePageChange } = props;
-  console.log(serverData);
+
   return (
     <TableStyle>
       <h1>{title}</h1>
