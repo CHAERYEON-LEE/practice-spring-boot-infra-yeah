@@ -1,12 +1,11 @@
-import axios from "axios";
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { Modal, Alert } from "antd";
 import { postBoardCreate } from "../../utils/api/board/boardApi";
-import styled from "styled-components";
 
 const AddBoardPage = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [modalOpen, setModalOpen] = useState(false);
@@ -37,7 +36,7 @@ const AddBoardPage = () => {
 
   const handleModalOk = () => {
     setModalOpen(false);
-    navigate("/board");
+    navigate(location.state.path);
   };
 
   return (
@@ -47,7 +46,7 @@ const AddBoardPage = () => {
       ) : (
         <div>
           <h1>게시글 등록하기</h1>
-          <button type="button" onClick={() => navigate("/board")}>
+          <button type="button" onClick={() => navigate(location.state.path)}>
             목록으로 돌아가기
           </button>
 

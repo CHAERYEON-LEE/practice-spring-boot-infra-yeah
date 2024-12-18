@@ -1,4 +1,3 @@
-import BoardPage from "./pages/board/BoardPage";
 import MainPage from "./pages/main/MainPage";
 import { AppLayoutStyle } from "./styles";
 

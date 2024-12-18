@@ -14,11 +14,6 @@ export const BoardColumns = [
     title: "board_id",
     dataIndex: "board_id",
     key: "board_id",
-    render: (text, record) => (
-      <a href={`/board/detail?board-id=${record.board_id}`}>
-        {record.board_id}
-      </a> // 링크를 클릭하면 상세 페이지로 이동
-    ),
   },
   {
     title: "제목",
@@ -29,6 +24,9 @@ export const BoardColumns = [
     title: "내용",
     dataIndex: "content",
     key: "content",
+    render: (text, record) => (
+      <a href={`/board/detail?board-id=${record.board_id}`}>{record.content}</a> // 링크를 클릭하면 상세 페이지로 이동
+    ),
   },
   {
     title: "조회수",

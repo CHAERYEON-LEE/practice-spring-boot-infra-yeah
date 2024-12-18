@@ -22,13 +22,13 @@ public class BoardController {
     }
 
     @GetMapping(value = "/pagination-list")
-    public CommonResponse<GetPaginationBoardListResponse> getPaginationBoardList(@RequestParam int pageSize, @RequestParam int pageNum) {
-        return boardService.selectPagingBoardList(pageSize, pageNum);
+    public CommonResponse<GetPaginationBoardListResponse> getPaginationBoardList(@RequestParam int pageSize, @RequestParam int pageNum, @RequestParam(required = false) String keyword) {
+        return boardService.selectPagingBoardList(pageSize, pageNum, keyword);
     }
 
     @GetMapping(value = "/infinite-pagination-list")
-    public CommonResponse<GetInfinitePaginationBoardListResponse> getInfinitePaginationBoardList(@RequestParam int pageSize, @RequestParam(required = false) Long lastBoardId) {
-        return boardService.selectInfinitePagingBoardList(pageSize, lastBoardId);
+    public CommonResponse<GetInfinitePaginationBoardListResponse> getInfinitePaginationBoardList(@RequestParam int pageSize, @RequestParam(required = false) Long lastBoardId, @RequestParam(required = false) String keyword) {
+        return boardService.selectInfinitePagingBoardList(pageSize, lastBoardId, keyword);
     }
 
     @GetMapping(value = "/detail/{boardId}", produces = "application/json;utf-8")
@@ -41,8 +41,9 @@ public class BoardController {
         return boardService.insertBoard(board);
     }
 
-    @DeleteMapping(value = "/delete", produces = "application/json;utf-8")
+    @DeleteMapping(value = "/delete/{boardId}", produces = "application/json;utf-8")
     public CommonResponse<Integer> softDeleteBoard(@PathVariable("boardId") int boardId) {
+        System.out.println(boardId);
         return boardService.deleteBoard(boardId);
 
     }

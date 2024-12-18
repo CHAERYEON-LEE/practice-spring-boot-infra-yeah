@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
-import { useSearchParams, useNavigate } from "react-router-dom";
+import { useSearchParams, useNavigate, useLocation } from "react-router-dom";
 import { deleteBoard, getBoardDetail } from "../../utils/api/board/boardApi";
 import UpdateBoard from "./UpdateBoard";
 
 const BoardDetail = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const [searchParams, setSearchParams] = useSearchParams();
   const detailId = searchParams.get("board-id");
   const [serverData, setServerData] = useState("");
@@ -24,7 +25,7 @@ const BoardDetail = () => {
 
   const handleDeleteBoard = async () => {
     const res = await deleteBoard(detailId);
-    if (res.data === 1) navigate("/board");
+    if (res.data === 1) window.history.back();
   };
 
   return (
@@ -34,7 +35,7 @@ const BoardDetail = () => {
       ) : (
         <>
           <h1>상세페이지</h1>
-          <button type="button" onClick={() => navigate("/board")}>
+          <button type="button" onClick={() => window.history.back()}>
             목록으로 돌아가기
           </button>
           {updateMode ? (

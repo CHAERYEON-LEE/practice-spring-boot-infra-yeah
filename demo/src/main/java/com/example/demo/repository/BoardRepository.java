@@ -1,6 +1,5 @@
 package com.example.demo.repository;
 import com.example.demo.domain.board.*;
-import com.github.pagehelper.PageInfo;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -9,9 +8,11 @@ import java.util.List;
 public interface BoardRepository {
     List<GetBoardListResponse> selectAllBoardList();
 
-    List<GetBoardListResponse> selectPagingBoardList(int pageSize, int pageNum);
+    List<GetBoardListResponse> selectPagingBoardList(int pageSize, int pageNum, String keyword);
 
-    List<GetBoardListResponse> selectInfinitePagingBoardList(int pageSize, Long lastBoardId);
+    List<GetBoardListResponse> selectInfinitePagingBoardList(int pageSize, Long lastBoardId, String keyword);
+
+    int selectTotalCount(String keyword);
 
     int selectTotalCount();
 

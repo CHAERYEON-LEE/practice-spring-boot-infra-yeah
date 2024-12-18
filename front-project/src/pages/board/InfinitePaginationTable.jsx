@@ -1,32 +1,49 @@
 import { Table } from "antd";
 import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
 import InfiniteScroll from "react-infinite-scroll-component";
 
 import { BoardColumns } from "../../utils/boardColum";
 
 const InfinitePaginationTable = (props) => {
-  const { serverData, handleScrollChange, hasMore } = props;
+  const navigate = useNavigate();
+  const { serverData, handleScrollChange, hasMore, totalCnt } = props;
 
   return (
     <TableStyle>
-      <h1>무한스크롤 페이지네이션</h1>
-      <InfiniteScroll
-        dataLength={serverData.length}
-        next={handleScrollChange}
-        hasMore={hasMore}
-        loader={<h4>데이터를 불러오는 중입니다!</h4>}
-        endMessage={
-          <p style={{ textAlign: "center" }}>
-            <b>불러올 데이터가 없습니다</b>
-          </p>
+      <button
+        type="button"
+        onClick={() =>
+          navigate("/board/create", {
+            state: { path: "/board-infinite-pagination" },
+          })
         }
       >
-        <Table
-          dataSource={serverData}
-          columns={BoardColumns}
-          pagination={false}
-        />
-      </InfiniteScroll>
+        게시글 등록하기
+      </button>
+      {serverData ? (
+        <>
+          <InfiniteScroll
+            dataLength={serverData.length}
+            next={handleScrollChange}
+            hasMore={hasMore}
+            loader={<h4>데이터를 불러오는 중입니다!</h4>}
+            endMessage={
+              <p style={{ textAlign: "center" }}>
+                <b>불러올 데이터가 없습니다</b>
+              </p>
+            }
+          >
+            <Table
+              dataSource={serverData}
+              columns={BoardColumns}
+              pagination={false}
+            />
+          </InfiniteScroll>
+        </>
+      ) : (
+        <p>데이터를 불러오는 중입니다</p>
+      )}
     </TableStyle>
   );
 };
@@ -34,12 +51,6 @@ const InfinitePaginationTable = (props) => {
 export default InfinitePaginationTable;
 
 const TableStyle = styled.div`
-  margin: 20px;
-  width: 50vw;
-
-  h1 {
-    font-size: 30px;
-    text-align: center;
-    margin-bottom: 16px;
-  }
+  margin: 50px auto;
+  width: 80vw;
 `;

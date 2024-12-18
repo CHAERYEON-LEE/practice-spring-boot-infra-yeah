@@ -11,4 +11,5 @@ import lombok.*;
 public class GetPaginationBoardListRequest {
     private int pageNum;
     private int pageSize;
+    private String keyword;
 }

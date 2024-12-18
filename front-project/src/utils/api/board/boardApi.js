@@ -11,10 +11,12 @@ export const getBoardList = async () => {
   return data;
 };
 
-export const getPaginationBoardList = async (size, currentPage) => {
+export const getPaginationBoardList = async (size, currentPage, keyword) => {
   const data = await axios
     .get(
-      `${CONST.BOARD_LIST_PAGINATION}?pageSize=${size}&pageNum=${currentPage}`
+      `${CONST.BOARD_LIST_PAGINATION}?pageSize=${size}&pageNum=${currentPage}${
+        keyword === null || keyword === "" ? "" : `&keyword=${keyword}`
+      }`
     )
     .then((res) => res.data)
     .catch((err) => err);
@@ -22,14 +24,17 @@ export const getPaginationBoardList = async (size, currentPage) => {
   return data;
 };
 
-export const getInfinitePaginationBoardList = async (size, lastBoardId) => {
-  const queryParams =
-    lastBoardId === null
-      ? `?pageSize=${size}`
-      : `?pageSize=${size}&lastBoardId=${lastBoardId}`;
-
+export const getInfinitePaginationBoardList = async (
+  size,
+  lastBoardId,
+  keyword
+) => {
   const data = await axios
-    .get(`${CONST.BOARD_LIST_INFINITE_PAGINATION}${queryParams}`)
+    .get(
+      `${CONST.BOARD_LIST_INFINITE_PAGINATION}?pageSize=${size}${
+        lastBoardId === null ? "" : `&lastBoardId=${lastBoardId}`
+      }${keyword === null || keyword === "" ? "" : `&keyword=${keyword}`}`
+    )
     .then((res) => res.data)
     .catch((err) => err);
 
@@ -62,7 +67,7 @@ export const postBoardCreate = async ({ title, content }) => {
 // 게시판 삭제
 export const deleteBoard = async (detailId) => {
   const data = await axios
-    .delete(`${CONST.BOARD_DELETE}?boardId=${detailId}`)
+    .delete(`${CONST.BOARD_DELETE}/${detailId}`)
     .then((res) => res.data)
     .catch((err) => err);
 

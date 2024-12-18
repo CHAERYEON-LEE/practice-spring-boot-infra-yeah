@@ -20,29 +20,25 @@ public class BoardService {
         return new CommonResponse<>(ResponseStatus.SUCCESS, boardResponse);
     }
 
-    public CommonResponse<GetPaginationBoardListResponse> selectPagingBoardList(int pageSize, int pageNum) {
-        List<GetBoardListResponse> boardList = boardRepository.selectPagingBoardList(pageSize, pageNum * pageSize);
-
+    public CommonResponse<GetPaginationBoardListResponse> selectPagingBoardList(int pageSize, int pageNum, String keyword) {
+        List<GetBoardListResponse> boardList = boardRepository.selectPagingBoardList(pageSize, pageNum * pageSize, keyword);
         GetPaginationBoardListResponse paginationBoardResponse = GetPaginationBoardListResponse.builder()
                 .boardList(boardList)
                 .pageNum(pageNum)
                 .pageSize(pageSize)
-                .totalCnt(boardRepository.selectTotalCount())
+                .totalCnt(boardRepository.selectTotalCount(keyword))
                 .build();
 
         return new CommonResponse<>(ResponseStatus.SUCCESS, paginationBoardResponse);
     }
 
-    public CommonResponse<GetInfinitePaginationBoardListResponse> selectInfinitePagingBoardList(int pageSize, Long lastBoardId) {
-        if (lastBoardId == null) lastBoardId = Long.MAX_VALUE;
-
-        List<GetBoardListResponse> boardList = boardRepository.selectInfinitePagingBoardList(pageSize, lastBoardId);
-
+    public CommonResponse<GetInfinitePaginationBoardListResponse> selectInfinitePagingBoardList(int pageSize, Long lastBoardId, String keyword) {
+        List<GetBoardListResponse> boardList = boardRepository.selectInfinitePagingBoardList(pageSize, lastBoardId, keyword);
         GetInfinitePaginationBoardListResponse infinitePaginationBoardResponse = GetInfinitePaginationBoardListResponse.builder()
                 .boardList(boardList)
                 .pageSize(pageSize)
                 .hasMore(boardList.size() < pageSize ? 0 : 1)
-                .totalCnt(boardRepository.selectTotalCount())
+                .totalCnt(boardRepository.selectTotalCount(keyword))
                 .build();
 
         return new CommonResponse<>(ResponseStatus.SUCCESS, infinitePaginationBoardResponse);
